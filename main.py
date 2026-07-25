@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from typing import Literal
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 
 model = joblib.load('Mental_Health_Model.pkl')
 top_countries = ['Other','India','USA','Canada','Australia','UK','Germany','Mexico','Turkey','France']
@@ -17,6 +18,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.get('/')
+def serve_frontend():
+    return FileResponse('index.html')
+
+
+@app.get('/styles.css')
+def serve_css():
+    return FileResponse('styles.css')
+
+
+@app.get('/script.js')
+def serve_js():
+    return FileResponse('script.js')
 
 
 class StudentData(BaseModel):
